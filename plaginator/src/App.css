@@ -1,0 +1,71 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap");
+:root {
+  --main-color: rgb(174, 105, 240);
+  --item-color: rgb(10, 243, 243);
+  --item-active-color: rgb(250, 250, 116);
+  --padding-item: 10px 10px;
+  --margin-item: 0px 5px;
+}
+* {
+  font-family: "Roboto", sans-serif;
+}
+.App {
+  height: 100vh;
+  background-color: var(--main-color);
+  display: flex;
+  justify-content: space-around;
+  max-width: 100%;
+}
+.plaginator {
+  max-width: 50%;
+  height: 40px;
+  margin-top: 50px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.item {
+  border: 1px solid var(--item-color);
+  color: var(--item-color);
+  border-radius: 20px;
+  padding: var(--padding-item);
+  box-shadow: 0 0 5px var(--item-color);
+  margin: var(--margin-item);
+  text-align: center;
+  cursor: pointer;
+  float: left;
+}
+.itemActive {
+  color: var(--item-active-color);
+  border-radius: 20px;
+  padding: var(--padding-item);
+  margin: var(--margin-item);
+  border: 1px solid var(--item-active-color);
+  box-shadow: 0 0 5px var(--item-active-color);
+  text-align: center;
+}
+.plaginator-items {
+  display: flex;
+  position: relative;
+  overflow: hidden;
+}
+.line{
+  display: flex;
+  position: relative;
+  left: 0;
+  transition: all ease 1s;
+}
+@media screen and (max-width: 720px) {
+  .App {
+    background-color: var(--main-color);
+    display: flex;
+    justify-content: space-around;
+  }
+  .plaginator {
+    max-width: 100%;
+    padding: 0px 8px;
+  }
+  .item {
+    padding: 4px;
+  }
+}
