@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./App.css";
 
 const LIST = [
@@ -18,6 +18,11 @@ const App = () => {
   const [offset, setOffset] = useState(0);
   const [lineWidth, setLineWidth] = useState(0);
   const [lineLeft, setLineLeft] = useState(0);
+  const [lineRight, setLineRight] = useState(0);
+
+  // useEffect(()=>{
+  //   initPageArrayElements();
+  // })
 
   const initPageArrayElements = () => {
     let items = document.querySelectorAll(".item");
@@ -28,7 +33,7 @@ const App = () => {
     setLineWidth(
       widthArray.reduce(
         (itemWidth, fullWidth) => fullWidth + itemWidth,
-        lineWidth
+        0
       )
     );
     console.log(widthArray);
@@ -43,18 +48,32 @@ const App = () => {
       ".plaginator-items"
     ) as HTMLElement).offsetWidth;
     const appendix = isRight ? +widthArray[index] : -widthArray[index];
-    const remainder = lineWidth - sliderWidth - (offset + appendix);
-    if (remainder >= 0) {
-      const offsetLocal = offset + appendix;
+    const remainder = lineWidth - sliderWidth - (offset);
+    
+  
+    const offsetLocal = offset + appendix;
+    if (remainder > 0) {
+  
       setOffset(offsetLocal);
       setLineLeft(-offsetLocal);
     } else {
-      setLineLeft(sliderWidth - lineWidth);
+      // setLineLeft(sliderWidth - lineWidth );
     }
     if (index == 0) {
       setLineLeft(0);
       setOffset(0);
     }
+    // if (remainder <= 0) {
+    //   const offsetLocal = offset - appendix;
+    //   setOffset(offsetLocal);
+    //   setLineRight(-offsetLocal);
+    // } else {
+    //   setLineRight(  lineWidth -sliderWidth );
+    // }
+    // if (index == 0) {
+    //   setLineRight(0);
+    //   setOffset(0);
+    // }
   };
 
   // arrow handler for selection
