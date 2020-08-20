@@ -18,11 +18,10 @@ const App = () => {
   const [offset, setOffset] = useState(0);
   const [lineWidth, setLineWidth] = useState(0);
   const [lineLeft, setLineLeft] = useState(0);
-  const [lineRight, setLineRight] = useState(0);
 
-  // useEffect(()=>{
-  //   initPageArrayElements();
-  // })
+  useEffect(() => {
+    initPageArrayElements();
+  })
 
   const initPageArrayElements = () => {
     let items = document.querySelectorAll(".item");
@@ -36,44 +35,33 @@ const App = () => {
         0
       )
     );
-    console.log(widthArray);
     return widthArray;
   };
 
   // handler on scroll
   const scrollPage = (isRight = false, index: number) => {
     const widthArray = initPageArrayElements();
-
     let sliderWidth = (document.querySelector(
       ".plaginator-items"
     ) as HTMLElement).offsetWidth;
+
     const appendix = isRight ? +widthArray[index] : -widthArray[index];
-    const remainder = lineWidth - sliderWidth - (offset);
-    
-  
+    const remainder = lineWidth - sliderWidth - offset;
     const offsetLocal = offset + appendix;
+
+
     if (remainder > 0) {
-  
       setOffset(offsetLocal);
       setLineLeft(-offsetLocal);
-    } else {
-      // setLineLeft(sliderWidth - lineWidth );
+    }
+    if (offset + lineWidth <= sliderWidth) {
+      setOffset(-offsetLocal);
+      setLineLeft(offsetLocal + offset);
     }
     if (index == 0) {
       setLineLeft(0);
       setOffset(0);
     }
-    // if (remainder <= 0) {
-    //   const offsetLocal = offset - appendix;
-    //   setOffset(offsetLocal);
-    //   setLineRight(-offsetLocal);
-    // } else {
-    //   setLineRight(  lineWidth -sliderWidth );
-    // }
-    // if (index == 0) {
-    //   setLineRight(0);
-    //   setOffset(0);
-    // }
   };
 
   // arrow handler for selection
