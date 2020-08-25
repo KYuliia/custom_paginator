@@ -18,13 +18,11 @@ const App = () => {
   const [offset, setOffset] = useState(0);
   const [lineWidth, setLineWidth] = useState(0);
   const [lineLeft, setLineLeft] = useState(0);
-
   useEffect(() => {
     initPageArrayElements();
   })
-
   const initPageArrayElements = () => {
-    let items = document.querySelectorAll(".item");
+    let items = document.querySelectorAll(".pillow");
     let widthArray = [];
     for (let i = 0; i < items.length; i++) {
       widthArray.push((items[i] as HTMLElement).offsetWidth);
@@ -37,33 +35,43 @@ const App = () => {
     );
     return widthArray;
   };
-
   // handler on scroll
   const scrollPage = (isRight = false, index: number) => {
     const widthArray = initPageArrayElements();
     let sliderWidth = (document.querySelector(
       ".plaginator-items"
     ) as HTMLElement).offsetWidth;
-
     const appendix = isRight ? +widthArray[index] : -widthArray[index];
     const remainder = lineWidth - sliderWidth - offset;
     const offsetLocal = offset + appendix;
+    if (isRight) {
+      if (remainder > 0) {
+        setOffset(offsetLocal);
+        setLineLeft(-offsetLocal);
+      }
+    } else {
+      if (index === LIST.length - 1) {
+        let offsetOfRightLast = lineWidth - sliderWidth;
+        offsetOfRightLast = offsetOfRightLast > widthArray[LIST.length - 1] ? offsetOfRightLast : widthArray[LIST.length - 1]
+        console.log(widthArray[index])
+        setOffset(offsetOfRightLast);
+        setLineLeft(-offsetOfRightLast);
+      } else
+        if (offset === 0 || offsetLocal < 0) {
+          setOffset(0);
+          setLineLeft(0);
+        } else {
+          setOffset(offsetLocal);
+          setLineLeft(-offsetLocal);
 
-
-    if (remainder > 0) {
-      setOffset(offsetLocal);
-      setLineLeft(-offsetLocal);
-    }
-    if (offset + lineWidth <= sliderWidth) {
-      setOffset(-offsetLocal);
-      setLineLeft(offsetLocal + offset);
+        }
     }
     if (index == 0) {
       setLineLeft(0);
       setOffset(0);
     }
-  };
 
+  };
   // arrow handler for selection
   const selectPageByArrow = (isRight = false): number => {
     if (isRight) {
@@ -75,40 +83,41 @@ const App = () => {
     setSelectedIndex(index);
     return index;
   };
-
   const arrowClickHandler = (isRight = false) => {
     const index = selectPageByArrow(isRight);
     scrollPage(isRight, index);
   };
-
   // render page list
   const getPageItems = () =>
     LIST.map((item, index) => {
       return (
         <div
           key={item.id}
+          className="pillow"
+        ><div
           onClick={() => setSelectedIndex(index)}
-          className={"item" + (selectedIndex === index ? "Active" : "")}
-        >
-          {item?.name.toUpperCase()}
-        </div>
+          className={"item" + (selectedIndex === index ? "Active" : "")}>
+            {item?.name.toUpperCase()}
+          </div></div>
       );
     });
 
   return (
     <div className="App">
       <div className="plaginator">
-        <div className="item" onClick={() => arrowClickHandler()}>
-          {"<"}
-        </div>
+        <div className="pillow">
+          <div className="item" onClick={() => arrowClickHandler()}>
+            {"<"}
+          </div></div>
         <div className="plaginator-items">
           <div className="line" style={{ width: lineWidth, left: lineLeft }}>
             {getPageItems()}
           </div>
         </div>
-        <div className="item" onClick={() => arrowClickHandler(true)}>
-          {">"}
-        </div>
+        <div className="pillow">
+          <div className="item" onClick={() => arrowClickHandler(true)}>
+            {">"}
+          </div></div>
       </div>
     </div>
   );
